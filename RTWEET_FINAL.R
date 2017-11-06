@@ -67,16 +67,17 @@ rm(list = ls())
 #replacing with static dataset - deerestatsM.csv
 df_source_lang <- read.csv("deerestatM.csv", stringsAsFactors = FALSE)
 
-#adding column as a placeholder
+#adding column as a placeholder for translated data
 df_source_lang$translatedContent <- NA
 
-#plot of top languages to determine top 6
+#bar chart of top languages to determine top 6
 df_minus_en <- subset(df_source_lang, df_source_lang$lang != "en")
 df_minus_und <- subset(df_minus_en, df_minus_en$lang != "und")
 lang_plot <- qplot(lang, data = df_minus_und, geom = "bar") + ggtitle("Tweets By Language") + labs(y = "Number of Tweets", x = "Language")
 ggsave(filename = "Top Languages Plot.png", plot = lang_plot, width = 6, height = 4)
 
 #subset each langauge into data frame and then translate the stripped text column in each data frame
+#data is translated using translateR and Google Translate API
 df_fr <- subset(df_source_lang, df_source_lang$lang == "fr")
 df_fr <- translate(dataset = df_fr,
                    content.field = 'stripped_text',
@@ -84,6 +85,7 @@ df_fr <- translate(dataset = df_fr,
                    source.lang = "fr", target.lang = "en")
 
 #subset each langauge into data frame and then translate the stripped text column in each data frame
+#data is translated using translateR and Google Translate API
 df_es <- subset(df_source_lang, df_source_lang$lang == "es")
 df_es <- translate(dataset = df_es,
                    content.field = 'stripped_text',
@@ -94,6 +96,7 @@ df_es <- translate(dataset = df_es,
 df_rbind <- rbind(df_es, df_fr)
 
 #subset each langauge into data frame and then translate the stripped text column in each data frame
+#data is translated using translateR and Google Translate API
 df_pt <- subset(df_source_lang, df_source_lang$lang == "pt")
 df_pt <- translate(dataset = df_pt,
                    content.field = 'stripped_text',
@@ -104,6 +107,7 @@ df_pt <- translate(dataset = df_pt,
 df_rbind <- rbind(df_pt, df_rbind)
 
 #subset each langauge into data frame and then translate the stripped text column in each data frame
+#data is translated using translateR and Google Translate API
 df_nl <- subset(df_source_lang, df_source_lang$lang == "nl")
 df_nl <- translate(dataset = df_nl,
                    content.field = 'stripped_text',
@@ -114,6 +118,7 @@ df_nl <- translate(dataset = df_nl,
 df_rbind <- rbind(df_nl, df_rbind)
 
 #subset each langauge into data frame and then translate the stripped text column in each data frame
+#data is translated using translateR and Google Translate API
 df_ja <- subset(df_source_lang, df_source_lang$lang == "ja")
 df_ja <- translate(dataset = df_ja,
                    content.field = 'stripped_text',
@@ -124,6 +129,7 @@ df_ja <- translate(dataset = df_ja,
 df_rbind <- rbind(df_ja, df_rbind)
 
 #subset each langauge into data frame and then translate the stripped text column in each data frame
+#data is translated using translateR and Google Translate API
 df_de <- subset(df_source_lang, df_source_lang$lang == "de")
 df_de <- translate(dataset = df_de,
                    content.field = 'stripped_text',
@@ -343,15 +349,15 @@ ggsave(filename = "Deere Word Network_03Nov_After.png", width = 6, height = 4)
 
 tweet <- read.csv("deerestats.csv", stringsAsFactors = FALSE)
 
-tweet <- subset(tweet,tweet$hashtags != "NA")
+tweet <- subset(tweet,tweet$hashtags != "NA") #Remove the NAs
 
-tweet <- subset(tweet,select = "hashtags")
+tweet <- subset(tweet,select = "hashtags") #Just the Hashtag column
 
-tweet <- strsplit(as.character(tolower(tweet$hashtags)),' ')
+tweet <- strsplit(as.character(tolower(tweet$hashtags)),' ') #Breakout multiple hashtags in a single tweet
 
-tweet <- data.frame(unlist(tweet),stringsAsFactors=FALSE)
+tweet <- data.frame(unlist(tweet),stringsAsFactors=FALSE) #Flattening list and inserting into a dataframe
 
-tweet %>%
+tweet %>% #Graph for top 30 unique hashtags
     count(unlist.tweet., sort=TRUE) %>%
     top_n(30) %>%
     mutate(unlist.tweet. = reorder(unlist.tweet., n)) %>%
@@ -369,15 +375,15 @@ ggsave(filename = "UniqueHashtagsOld.png", plot = last_plot(), width = 6, height
 
 tweet1 <- read.csv("deerestatsNew.csv", stringsAsFactors = FALSE)
 
-tweet1 <- subset(tweet1,tweet1$hashtags != "NA")
+tweet1 <- subset(tweet1,tweet1$hashtags != "NA") #Remove the NAs
 
-tweet1 <- subset(tweet1,select = "hashtags")
+tweet1 <- subset(tweet1,select = "hashtags") #Just the Hashtag column
 
-tweet1 <- strsplit(as.character(tolower(tweet1$hashtags)),' ')
+tweet1 <- strsplit(as.character(tolower(tweet1$hashtags)),' ') #Breakout multiple hashtags in a single tweet
 
-tweet1 <- data.frame(unlist(tweet1),stringsAsFactors=FALSE)
+tweet1 <- data.frame(unlist(tweet1),stringsAsFactors=FALSE) #Flattening list and inserting into a dataframe
 
-tweet1 %>%
+tweet1 %>% #Graph for top 30 unique hashtags
     count(unlist.tweet1., sort=TRUE) %>%
     top_n(30) %>%
     mutate(unlist.tweet1. = reorder(unlist.tweet1., n)) %>%
@@ -403,7 +409,7 @@ tweet2 <- strsplit(as.character(tolower(tweet2$hashtags)),' ')
 
 tweet2 <- data.frame(unlist(tweet2),stringsAsFactors=FALSE)
 
-tweet2 %>%
+tweet2 %>% #Graph for top 30 unique hashtags
     count(unlist.tweet2., sort=TRUE) %>%
     top_n(40) %>%
     mutate(unlist.tweet2. = reorder(unlist.tweet2., n)) %>%
