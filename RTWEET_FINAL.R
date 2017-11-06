@@ -73,7 +73,8 @@ df_source_lang$translatedContent <- NA
 #plot of top languages to determine top 6
 df_minus_en <- subset(df_source_lang, df_source_lang$lang != "en")
 df_minus_und <- subset(df_minus_en, df_minus_en$lang != "und")
-toplang <- qplot(lang, data = df_minus_und, geom = "bar")
+lang_plot <- qplot(lang, data = df_minus_und, geom = "bar") + ggtitle("Tweets By Language") + labs(y = "Number of Tweets", x = "Language")
+ggsave(filename = "Top Languages Plot.png", plot = lang_plot, width = 6, height = 4)
 
 #subset each langauge into data frame and then translate the stripped text column in each data frame
 df_fr <- subset(df_source_lang, df_source_lang$lang == "fr")
