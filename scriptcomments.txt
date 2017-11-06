@@ -1,0 +1,7 @@
+tweet1 <- subset(tweet1,tweet1$hashtags != "NA")  #Remove the NAs
+
+tweet1 <- subset(tweet1,select = "hashtags")   #Just the Hashtag column
+
+tweet1 <- strsplit(as.character(tolower(tweet1$hashtags)),' ')  #Breakout multiple hashtags in a single tweet
+
+tweet1 <- data.frame(unlist(tweet1),stringsAsFactors=FALSE) #Flattening list and inserting into a dataframe
